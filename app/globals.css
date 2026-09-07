@@ -1,0 +1,170 @@
+@import "tailwindcss";
+
+/*
+  Paleta "Volta por Cima" — premium, feminina, madura e emocional.
+  Tema único e claro (sem dark mode) para manter a identidade consistente.
+*/
+:root {
+  --cor-fundo: #fbf6f2;
+  --cor-superficie: #ffffff;
+  --cor-superficie-suave: #f4e7de;
+  --cor-texto: #2a2024;
+  --cor-texto-suave: #6f5f63;
+  --cor-primaria: #7b3f5e;
+  --cor-primaria-escura: #58253f;
+  --cor-primaria-clara: #b06e8c;
+  --cor-acento: #c67d54;
+  --cor-borda: #e7d6cb;
+  --cor-sucesso: #4f7a5b;
+  --sombra-suave: 0 12px 40px -12px rgba(88, 37, 63, 0.18);
+}
+
+@theme inline {
+  --color-fundo: var(--cor-fundo);
+  --color-superficie: var(--cor-superficie);
+  --color-superficie-suave: var(--cor-superficie-suave);
+  --color-texto: var(--cor-texto);
+  --color-texto-suave: var(--cor-texto-suave);
+  --color-primaria: var(--cor-primaria);
+  --color-primaria-escura: var(--cor-primaria-escura);
+  --color-primaria-clara: var(--cor-primaria-clara);
+  --color-acento: var(--cor-acento);
+  --color-borda: var(--cor-borda);
+  --color-sucesso: var(--cor-sucesso);
+  --font-serif: var(--fonte-serif), Georgia, "Times New Roman", serif;
+  --font-sans: var(--fonte-sans), system-ui, -apple-system, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* --- Animações da tela de carregamento --- */
+@keyframes vpc-ondulacao {
+  0% {
+    transform: scale(0.35);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(2.3);
+    opacity: 0;
+  }
+}
+
+@keyframes vpc-respiro {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.14);
+  }
+}
+
+@keyframes vpc-surge {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.vpc-ondulacao {
+  animation: vpc-ondulacao 2.4s ease-out infinite;
+}
+.vpc-respiro {
+  animation: vpc-respiro 2.4s ease-in-out infinite;
+}
+.vpc-surge {
+  animation: vpc-surge 0.6s ease-out both;
+}
+
+/* --- Transição entre telas do quiz --- */
+@keyframes vpc-vista {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes vpc-desliza {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.vpc-vista {
+  animation: vpc-vista 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Cascata suave dos itens filhos (opções de resposta). */
+.vpc-cascata > * {
+  animation: vpc-desliza 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.vpc-cascata > *:nth-child(1) {
+  animation-delay: 0.06s;
+}
+.vpc-cascata > *:nth-child(2) {
+  animation-delay: 0.11s;
+}
+.vpc-cascata > *:nth-child(3) {
+  animation-delay: 0.16s;
+}
+.vpc-cascata > *:nth-child(4) {
+  animation-delay: 0.21s;
+}
+.vpc-cascata > *:nth-child(5) {
+  animation-delay: 0.26s;
+}
+.vpc-cascata > *:nth-child(6) {
+  animation-delay: 0.31s;
+}
+.vpc-cascata > *:nth-child(7) {
+  animation-delay: 0.36s;
+}
+
+/* Respeita quem prefere menos movimento (público sensível). */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .vpc-ondulacao,
+  .vpc-respiro,
+  .vpc-surge,
+  .vpc-vista,
+  .vpc-cascata > * {
+    animation: none;
+  }
+  .vpc-surge,
+  .vpc-vista,
+  .vpc-cascata > * {
+    opacity: 1;
+    transform: none;
+  }
+}
