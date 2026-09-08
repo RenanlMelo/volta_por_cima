@@ -15,6 +15,7 @@ import {
   lerSessao,
   salvarProgresso,
 } from "@/lib/armazenamento";
+import { registrarConclusaoQuiz } from "@/lib/eventos";
 import { AUTOR_METODO } from "@/lib/citacoes";
 import type { RespostasQuiz } from "@/lib/diagnostico/tipos";
 import { PERGUNTAS, TOTAL_PERGUNTAS } from "@/lib/perguntas";
@@ -163,6 +164,8 @@ export default function QuizPage() {
 
   function finalizarProcessamento() {
     concluirSessao(respostas);
+    // Registro anônimo da conclusão na planilha. Não bloqueia a navegação.
+    void registrarConclusaoQuiz(respostas);
     router.push("/resultado");
   }
 
@@ -243,9 +246,9 @@ export default function QuizPage() {
               <PrintRelato
                 src="/relato1.png"
                 alt="Print de uma conversa mostrando um ex tentando reaproximação depois de um término"
-                width={700}
-                height={600}
-                className="mx-auto w-full max-w-[240px]"
+                width={1170}
+                height={2532}
+                className="mx-auto w-full max-w-[320px]"
               />
               <div className="mt-5 flex justify-end">
                 <Botao onClick={continuarExtra}>Continuar</Botao>
