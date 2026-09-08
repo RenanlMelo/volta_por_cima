@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BotaoLink } from "@/components/Botao";
 import { Cabecalho } from "@/components/Cabecalho";
@@ -204,10 +205,13 @@ function Resultado({ diagnostico: d }: { diagnostico: Diagnostico }) {
             </div>
           </div>
 
-          <div className="mt-8 flex justify-center">
-            <BotaoLink href="/quiz" variante="secundario">
+          <div className="mt-6 flex justify-center">
+            <Link
+              href="/quiz"
+              className="text-xs text-texto-suave underline decoration-borda underline-offset-4 transition-colors hover:text-texto"
+            >
               Refazer o diagnóstico
-            </BotaoLink>
+            </Link>
           </div>
 
           <p className="mx-auto mt-8 max-w-md text-center text-xs text-texto-suave">

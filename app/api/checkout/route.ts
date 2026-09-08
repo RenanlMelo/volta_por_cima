@@ -1,17 +1,16 @@
 import { NextResponse } from "next/server";
 
 /**
- * Handler de checkout — ponto único de integração com o gateway de pagamento.
+ * Handler de checkout — ponto único de integração com o pagamento.
  *
- * Como conectar um gateway (Kiwify / Hotmart / Stripe / Mercado Pago):
- *  1. Defina as variáveis de ambiente do provedor (ver `.env.example`).
- *  2. No bloco marcado abaixo, crie a sessão/checkout no provedor usando
- *     `dados.produtoId` e `dados.precoPorCentavos`.
- *  3. Devolva `{ url }` com o link de pagamento — o front redireciona sozinho.
- *
- * Enquanto `CHECKOUT_PROVIDER` não estiver configurado, respondemos 503 com uma
- * mensagem amigável (o front trata isso e oferece captura de e-mail).
+ * Hoje o checkout é um link fixo da Cakto. O front chama este handler, recebe
+ * `{ url }` e redireciona. Para trocar de provedor, basta mudar `LINK_CHECKOUT`
+ * (ou a env `CHECKOUT_URL`) e, se precisar, criar a sessão aqui antes de
+ * devolver a URL.
  */
+
+const LINK_CHECKOUT =
+  process.env.CHECKOUT_URL || "https://pay.cakto.com.br/vpacvet_1090564";
 
 interface CorpoCheckout {
   produtoId?: string;
@@ -39,23 +38,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const provedor = process.env.CHECKOUT_PROVIDER;
-
-  // ────────────────────────────────────────────────────────────────────
-  // INTEGRAÇÃO COM O GATEWAY VAI AQUI.
-  //
-  // Exemplo (pseudo):
-  //   if (provedor === "stripe") {
-  //     const session = await stripe.checkout.sessions.create({ ... });
-  //     return NextResponse.json({ url: session.url });
-  //   }
-  //   if (provedor === "kiwify") {
-  //     const url = montarLinkKiwify(dados);
-  //     return NextResponse.json({ url });
-  //   }
-  // ────────────────────────────────────────────────────────────────────
-
-  if (!provedor) {
+  if (!LINK_CHECKOUT) {
     return NextResponse.json(
       {
         mensagem:
@@ -65,11 +48,11 @@ export async function POST(request: Request) {
     );
   }
 
-  // Provedor configurado mas ainda sem implementação específica.
-  return NextResponse.json(
-    {
-      mensagem: `Gateway "${provedor}" ainda não implementado neste handler.`,
-    },
-    { status: 501 },
-  );
+  // Passa a atribuição pra Cakto via UTM (aparece no painel de vendas).
+  const url = new URL(LINK_CHECKOUT);
+  if (dados.origem) url.searchParams.set("utm_source", dados.origem);
+  if (dados.arquetipo) url.searchParams.set("utm_content", dados.arquetipo);
+  if (dados.segmento) url.searchParams.set("utm_campaign", dados.segmento);
+
+  return NextResponse.json({ url: url.toString() });
 }
