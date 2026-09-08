@@ -76,8 +76,15 @@ export interface Diagnostico {
 }
 
 export interface SessaoSalva {
+  /**
+   * Id estável da sessão do quiz (gerado no primeiro save). Vai junto no evento
+   * enviado à planilha e é o que permitirá casar a conclusão com o checkout.
+   */
+  id?: string;
   respostas: RespostasQuiz;
   /** Índice (0-based) da pergunta em que a usuária parou. Permite retomar. */
   etapa?: number;
   concluidoEm?: string;
+  /** ISO — quando a conclusão já foi registrada na planilha (evita duplicar). */
+  enviadoEm?: string;
 }

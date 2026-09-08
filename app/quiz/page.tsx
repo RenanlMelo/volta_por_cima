@@ -15,6 +15,7 @@ import {
   lerSessao,
   salvarProgresso,
 } from "@/lib/armazenamento";
+import { registrarConclusaoQuiz } from "@/lib/eventos";
 import { AUTOR_METODO } from "@/lib/citacoes";
 import type { RespostasQuiz } from "@/lib/diagnostico/tipos";
 import { PERGUNTAS, TOTAL_PERGUNTAS } from "@/lib/perguntas";
@@ -163,6 +164,8 @@ export default function QuizPage() {
 
   function finalizarProcessamento() {
     concluirSessao(respostas);
+    // Registro anônimo da conclusão na planilha. Não bloqueia a navegação.
+    void registrarConclusaoQuiz(respostas);
     router.push("/resultado");
   }
 
