@@ -12,8 +12,8 @@ export function ProvaSocial() {
       <PrintRelato
         src="/relato2.png"
         alt="Print de uma conversa mostrando uma reaproximação leve, sem cobrança"
-        width={700}
-        height={1290}
+        width={1170}
+        height={2532}
         className="mt-4 w-full"
       />
     </aside>
