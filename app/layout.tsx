@@ -7,7 +7,7 @@ import "./globals.css";
 // Meta Pixel — dispara PageView no carregamento e deixa `fbq` global para
 // eventos (Lead, InitiateCheckout, etc.). Em App Router "afterInteractive" é o
 // equivalente correto de colocar no <head>.
-const META_PIXEL_ID = "913969341396001";
+const META_PIXEL_ID = "1106486448710718";
 
 const fonteSerif = Fraunces({
   variable: "--fonte-serif",
