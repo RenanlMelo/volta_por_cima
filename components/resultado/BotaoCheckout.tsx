@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Botao } from "@/components/Botao";
 import { CheckoutIndisponivelError, iniciarCheckout } from "@/lib/checkout";
 import type { Diagnostico } from "@/lib/diagnostico/tipos";
+import { rastrearPixel } from "@/lib/pixel";
 import { PROTOCOLO_EFEITO_SAUDADE } from "@/lib/produtos";
 
 type Situacao = "ocioso" | "carregando" | "indisponivel";
@@ -15,6 +16,11 @@ export function BotaoCheckout({ diagnostico }: { diagnostico: Diagnostico }) {
   async function comprar() {
     setSituacao("carregando");
     setMensagem("");
+    rastrearPixel("InitiateCheckout", {
+      value: PROTOCOLO_EFEITO_SAUDADE.precoPorCentavos / 100,
+      currency: "BRL",
+      content_name: PROTOCOLO_EFEITO_SAUDADE.nome,
+    });
     try {
       const { url } = await iniciarCheckout({
         produtoId: PROTOCOLO_EFEITO_SAUDADE.id,

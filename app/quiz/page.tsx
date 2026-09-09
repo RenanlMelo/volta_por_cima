@@ -17,6 +17,7 @@ import {
 } from "@/lib/armazenamento";
 import { registrarConclusaoQuiz } from "@/lib/eventos";
 import { AUTOR_METODO } from "@/lib/citacoes";
+import { rastrearPixel } from "@/lib/pixel";
 import type { RespostasQuiz } from "@/lib/diagnostico/tipos";
 import { PERGUNTAS, TOTAL_PERGUNTAS } from "@/lib/perguntas";
 import { etapaSegura, quizCompleto } from "@/lib/progresso";
@@ -166,6 +167,8 @@ export default function QuizPage() {
     concluirSessao(respostas);
     // Registro anônimo da conclusão na planilha. Não bloqueia a navegação.
     void registrarConclusaoQuiz(respostas);
+    // Concluir o quiz = lead (Meta Pixel).
+    rastrearPixel("Lead", { content_name: "Diagnóstico Volta por Cima" });
     router.push("/resultado");
   }
 
